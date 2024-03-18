@@ -26,3 +26,8 @@ sudo apt-get update
 
 # Install
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin 
+
+# Avoid using sudo all the time
+ sudo groupadd docker #probably exists
+ sudo usermod -aG docker $USER
+ Restart the machine
