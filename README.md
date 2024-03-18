@@ -38,3 +38,8 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
  sudo usermod -aG docker $USER
 ````
 Restart the machine
+
+
+http://your_device_ip:8080/wp-admin/install.php
+
+Original Source: https://silicon.blog/2023/05/17/how-to-self-host-a-wordpress-docker-container-with-nginx-proxy-manager-and-cloudflare/
