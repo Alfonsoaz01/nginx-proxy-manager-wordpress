@@ -1,55 +1,51 @@
 version: '3'
 services:
-  app:
-    image: 'jc21/nginx-proxy-manager:2.9.18'
-    hostname: npm
-    container_name: npm
-    restart: unless-stopped
-    ports:
-      - '81:81'
-      - '443:443'
-    volumes:
-      - ./data:/data
-  - ./letsencrypt:/etc/letsencrypt
-    networks:
-      - npm
+  app:
+    image: 'jc21/nginx-proxy-manager:2.9.18'
+    hostname: npm
+    container_name: npm
+    restart: unless-stopped
+    ports:
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+    networks:
+      - npm
 
+  mysql:
+    image: mysql:8.0
+    hostname: mysql
+    container_name: mysql
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - npm
 
-  mysql:
-    image: mysql:8.0
-    hostname: mysql
-    container_name: mysql
-    env_file: .env
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    volumes:
-       - mysql:/var/lib/mysql
-    networks:
-      - npm
-
-
-  wordpress:
-    image: wordpress:6.2-php8.0-apache
-    hostname: wordpress-1
-    container_name: wordpress-1
-    ports:
-      - 8080:80   
-    environment:
-      WORDPRESS_DB_HOST: mysql
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-    networks:
-      - npm
-
+  wordpress:
+    image: wordpress:6.2-php8.0-apache
+    hostname: wordpress-1
+    container_name: wordpress-1
+    ports:
+      - 8080:80  
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+    networks:
+      - npm
 
 volumes:
-  mysql:
-
+  mysql:
 
 networks:
-  npm:
-    name: npm_network
+  npm:
+    name: npm_network
